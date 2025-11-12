@@ -7,6 +7,9 @@
     "build": "next build",
     "start": "next start"
   },
+  "npmConfig": {
+    "legacy-peer-deps": true
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.42.0",
     "canvas": "^3.2.0",
