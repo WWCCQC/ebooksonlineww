@@ -3,8 +3,14 @@ import { supabase } from '../lib/supabaseClient';
 import { useRouter } from 'next/router';
 
 interface User {
+  id: string;
   id_card: string;
   full_name: string;
+  email: string;
+  student_id: string;
+  department: string;
+  year_level: number;
+  phone: string;
   password: string;
   is_active: boolean;
   created_at: string;
@@ -23,7 +29,13 @@ export default function AdminPage() {
   // Form states
   const [formData, setFormData] = useState({
     id_card: '',
-    full_name: ''
+    full_name: '',
+    email: '',
+    student_id: '',
+    department: '',
+    year_level: 1,
+    phone: '',
+    password: ''
   });
 
   const [csvData, setCsvData] = useState('');
@@ -84,7 +96,13 @@ export default function AdminPage() {
       setShowAddForm(false);
       setFormData({
         id_card: '', 
-        full_name: ''
+        full_name: '',
+        email: '',
+        student_id: '',
+        department: '',
+        year_level: 1,
+        phone: '',
+        password: ''
       });
       loadUsers();
     } catch (error: any) {
@@ -171,8 +189,9 @@ export default function AdminPage() {
   };
 
   const filteredUsers = users.filter(user => 
-    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.id_card.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.student_id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
