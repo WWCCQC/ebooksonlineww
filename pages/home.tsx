@@ -25,7 +25,7 @@ export default function HomePage() {
 
   const handleHomepage = () => {
     // ไปหน้าแรก - Canva Design URL
-    const targetUrl = 'https://www.canva.com/design/DAG3_k1T9QM/IduYl9hTy3l4PhxslXTJ5w/view?embed';
+    const targetUrl = 'https://www.canva.com/design/DAG4dl4vPcc/coe4BRf6XquhoALk3JKK1g/view?embed';
     console.log('🏠 Home: Setting target_url:', targetUrl);
     localStorage.setItem('target_url', targetUrl);
     router.push('/ebook-viewer');
@@ -33,7 +33,7 @@ export default function HomePage() {
 
   const handleEbook = () => {
     // ไปหน้า E-Book - Canva Design URL (ใส่ Design ID ของ E-Book)
-    const targetUrl = 'https://www.canva.com/design/DAG3_k1T9QM/IduYl9hTy3l4PhxslXTJ5w/view?embed';
+    const targetUrl = 'https://www.canva.com/design/DAG4dl4vPcc/coe4BRf6XquhoALk3JKK1g/view?embed';
     console.log('📖 E-Book: Setting target_url:', targetUrl);
     localStorage.setItem('target_url', targetUrl);
     router.push('/ebook-viewer');

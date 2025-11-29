@@ -48,7 +48,7 @@ export default function EbookPage() {
         const targetUrl = localStorage.getItem('target_url');
         console.log("🔍 Target URL from localStorage:", targetUrl);
         
-        const ebookEmbedUrl = targetUrl || "https://www.canva.com/design/DAG3_k1T9QM/IduYl9hTy3l4PhxslXTJ5w/view?embed";
+        const ebookEmbedUrl = targetUrl || "https://www.canva.com/design/DAG4dl4vPcc/coe4BRf6XquhoALk3JKK1g/view?embed";
         
         // ลบ target_url ออกหลังใช้งาน
         if (targetUrl) {
