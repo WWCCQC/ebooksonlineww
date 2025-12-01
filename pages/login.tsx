@@ -418,7 +418,7 @@ export default function LoginPage() {
                 type="text"
                 className="form-input"
                 value={idCard}
-                onChange={(e) => setIdCard(e.target.value.replace(/\D/g, ''))}
+                onChange={(e) => setIdCard(e.target.value)}
                 placeholder="กรอกรหัสพนักงาน"
                 required
               />
