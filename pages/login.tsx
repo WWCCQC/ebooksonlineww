@@ -431,10 +431,9 @@ export default function LoginPage() {
                   type={showPassword ? "text" : "password"}
                   className="form-input"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="กรอกรหัสผ่าน"
                   required
-                  maxLength={10}
                   style={{ paddingRight: '40px' }}
                 />
                 <button
