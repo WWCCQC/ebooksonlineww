@@ -143,9 +143,9 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      // ตรวจสอบรหัสพนักงาน
-      if (idCard.length < 1 || !/^\d+$/.test(idCard)) {
-        setError('กรุณากรอกรหัสพนักงาน (ตัวเลขเท่านั้น)');
+      // ตรวจสอบรหัสพนักงาน (รองรับตัวเลขและตัวอักษร)
+      if (idCard.length < 1) {
+        setError('กรุณากรอกรหัสพนักงาน');
         setLoading(false);
         return;
       }
