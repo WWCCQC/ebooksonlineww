@@ -150,32 +150,72 @@ export default function LoginPage() {
         return;
       }
 
-      // ตรวจสอบใน Supabase database
-      const { data: userData, error: userError } = await supabase
+      let userData = null;
+      let userSource = '';
+
+      // 1. ตรวจสอบใน user_ebook ก่อน
+      const { data: ebookUser, error: ebookError } = await supabase
         .from('user_ebook')
         .select('*')
         .eq('id_card', idCard)
         .eq('is_active', true)
         .single();
 
-      if (userError || !userData) {
+      if (ebookUser && !ebookError) {
+        // ตรวจสอบรหัสผ่าน user_ebook
+        if (password === ebookUser.password) {
+          userData = {
+            id_card: ebookUser.id_card,
+            full_name: ebookUser.full_name
+          };
+          userSource = 'user_ebook';
+        } else {
+          setError('รหัสผ่านไม่ถูกต้อง');
+          setLoading(false);
+          return;
+        }
+      }
+
+      // 2. ถ้าไม่พบใน user_ebook ให้ตรวจสอบใน technicians
+      if (!userData) {
+        const { data: techUser, error: techError } = await supabase
+          .from('technicians')
+          .select('tech_id, full_name, national_id')
+          .eq('tech_id', idCard)
+          .single();
+
+        if (techUser && !techError) {
+          // ใช้ 8 หลักสุดท้ายของ national_id เป็นรหัสผ่าน
+          const last8Digits = techUser.national_id ? techUser.national_id.slice(-8) : '';
+          
+          if (password === last8Digits) {
+            userData = {
+              id_card: techUser.tech_id,
+              full_name: techUser.full_name
+            };
+            userSource = 'technicians';
+          } else {
+            setError('รหัสผ่านไม่ถูกต้อง');
+            setLoading(false);
+            return;
+          }
+        }
+      }
+
+      // ถ้าไม่พบในทั้ง 2 ตาราง
+      if (!userData) {
         setError('รหัสพนักงานไม่ถูกต้อง หรือบัญชีถูกปิดใช้งาน');
         setLoading(false);
         return;
       }
 
-      // ตรวจสอบรหัสผ่าน
-      if (password !== userData.password) {
-        setError('รหัสผ่านไม่ถูกต้อง');
-        setLoading(false);
-        return;
+      // อัพเดตเวลาการเข้าใช้งานล่าสุด (เฉพาะ user_ebook)
+      if (userSource === 'user_ebook') {
+        await supabase
+          .from('user_ebook')
+          .update({ last_login: new Date().toISOString() })
+          .eq('id_card', userData.id_card);
       }
-
-      // อัพเดตเวลาการเข้าใช้งานล่าสุด
-      await supabase
-        .from('user_ebook')
-        .update({ last_login: new Date().toISOString() })
-        .eq('id_card', userData.id_card);
 
       // เก็บข้อมูลผู้ใช้ใน localStorage
       localStorage.setItem('user_data', JSON.stringify({
