@@ -143,46 +143,14 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      // ตรวจสอบเลขบัตรประชาชน (รองรับ mockup data ที่สั้นกว่า 13 หลัก)
+      // ตรวจสอบรหัสพนักงาน
       if (idCard.length < 1 || !/^\d+$/.test(idCard)) {
         setError('กรุณากรอกรหัสพนักงาน (ตัวเลขเท่านั้น)');
         setLoading(false);
         return;
       }
 
-      // Mockup users (สำหรับทดสอบ - ไม่ต้องใช้ database)
-      const mockupUsers = [
-        { id_card: '1234567890123', full_name: 'นาย ทดสอบ ระบบ', password: '7890123456' },
-        { id_card: '9876543210987', full_name: 'นาง สมมุติ ทดลอง', password: '3210987654' },
-        { id_card: '1111222233334', full_name: 'นาย ตัวอย่าง ทดสอบ', password: '2233334444' },
-        { id_card: '5555666677778', full_name: 'นาง ทดลอง ระบบ', password: '6677778888' },
-        { id_card: '9999888877776', full_name: 'นาย สาธิต โปรแกรม', password: '8877776666' },
-        { id_card: '01025343', full_name: 'โสภิดา มลพิชัย', password: '01025343' }
-      ];
-
-      // ตรวจสอบใน mockup users ก่อน
-      const mockupUser = mockupUsers.find(u => u.id_card === idCard);
-
-      if (mockupUser) {
-        // ตรวจสอบรหัสผ่าน
-        if (password !== mockupUser.password) {
-          setError('รหัสผ่านไม่ถูกต้อง');
-          setLoading(false);
-          return;
-        }
-
-        // เก็บข้อมูลผู้ใช้ใน localStorage
-        localStorage.setItem('user_data', JSON.stringify({
-          id_card: mockupUser.id_card,
-          full_name: mockupUser.full_name,
-          watermark_text: mockupUser.full_name
-        }));
-
-        router.push("/ebook-viewer");
-        return;
-      }
-
-      // ถ้าไม่พบใน mockup users ให้ลองเช็คใน database
+      // ตรวจสอบใน Supabase database
       const { data: userData, error: userError } = await supabase
         .from('user_ebook')
         .select('*')
