@@ -426,7 +426,7 @@ export default function LoginPage() {
 
             <div className="form-group">
               <label className="form-label">รหัสผ่าน</label>
-              <div style={{ position: 'relative' }}>
+              <div style={{ position: 'relative', width: '100%' }}>
                 <input
                   type={showPassword ? "text" : "password"}
                   className="form-input"
@@ -434,7 +434,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="กรอกรหัสผ่าน"
                   required
-                  style={{ paddingRight: '40px' }}
+                  style={{ paddingRight: '40px', width: '100%', boxSizing: 'border-box' }}
                 />
                 <button
                   type="button"
