@@ -421,6 +421,7 @@ export default function LoginPage() {
                 onChange={(e) => setIdCard(e.target.value)}
                 placeholder="กรอกรหัสพนักงาน"
                 required
+                style={{ width: '100%', boxSizing: 'border-box' }}
               />
             </div>
 
